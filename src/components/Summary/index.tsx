@@ -1,28 +1,19 @@
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react'
 import { SummaryCard, SummaryContainer } from './style'
-import { useContext } from 'react'
-import { TransactionsContext } from '../../contexts/TransactionsContext'
+import useSummary from '../../hooks/useSummary'
 
 const Summary = () => {
-  const { transactions } = useContext(TransactionsContext)
+  const summary = useSummary()
 
-  const summary = transactions.reduce(
-    (acc, transaction) => {
-      if (transaction.type === 'income') {
-        acc.income += transaction.price
-        acc.total += transaction.price
-      } else {
-        acc.outcome += transaction.price
-        acc.total -= transaction.price
-      }
-      return acc
-    },
-    {
-      income: 0,
-      outcome: 0,
-      total: 0,
-    },
-  )
+  const setColorBasedOnCondition = () => {
+    if (summary.total > 0) {
+      return 'green'
+    } else if (summary.total < 0) {
+      return 'red'
+    } else if (summary.total === 0) {
+      return 'none'
+    }
+  }
   return (
     <SummaryContainer>
       <SummaryCard>
@@ -31,7 +22,12 @@ const Summary = () => {
           <ArrowCircleUp size={32} color="#00b37e" />
         </header>
 
-        <strong>{summary.income}</strong>
+        <strong>
+          {summary.income.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </strong>
       </SummaryCard>
       <SummaryCard>
         <header>
@@ -39,15 +35,25 @@ const Summary = () => {
           <ArrowCircleDown size={32} color="#f75a68" />
         </header>
 
-        <strong>{summary.outcome}</strong>
+        <strong>
+          {summary.outcome.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </strong>
       </SummaryCard>
-      <SummaryCard variant={summary.total > 0 ? 'green' : 'red'}>
+      <SummaryCard variant={setColorBasedOnCondition()}>
         <header>
           <span>Total</span>
           <CurrencyDollar size={32} color="#FFF" />
         </header>
 
-        <strong>{summary.total}</strong>
+        <strong>
+          {summary.total.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </strong>
       </SummaryCard>
     </SummaryContainer>
   )

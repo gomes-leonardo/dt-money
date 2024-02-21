@@ -11,6 +11,11 @@ import { TransactionsContext } from '../../contexts/TransactionsContext'
 
 const Transactions = () => {
   const { transactions } = useContext(TransactionsContext)
+
+  const formatDate = (date: string) => {
+    const newDate = new Date(date)
+    return newDate.toLocaleDateString('pt-BR')
+  }
   return (
     <div>
       <Header />
@@ -31,7 +36,7 @@ const Transactions = () => {
                   </PriceHighLight>
                 </td>
                 <td>{transaction.category}</td>
-                <td>{transaction.createdAt}</td>
+                <td>{formatDate(transaction.createdAt)}</td>
               </tr>
             ))}
           </tbody>
