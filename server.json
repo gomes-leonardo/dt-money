@@ -1,36 +1,12 @@
 {
-    "transactions": [
-        {
-            "id": 1,
-            "description": "Freelancer de website",
-            "type": "income",
-            "category": "Venda",
-            "price": 6000,
-            "createdAt": "2021-02-12T00:00:00.000Z"
-        },
-        {
-            "id": 2,
-            "description": "Aluguel",
-            "type": "outcome",
-            "category": "Casa",
-            "price": 1100,
-            "createdAt": "2021-02-14T00:00:00.000Z"
-        },
-        {
-            "id": 3,
-            "description": "Seguro do Carro",
-            "type": "outcome",
-            "category": "Carro",
-            "price": 5000,
-            "createdAt": "2021-02-14T00:00:00.000Z"
-        },
-        {
-            "id": 4,
-            "description": "Venda de Tênis",
-            "type": "income",
-            "category": "Venda",
-            "price": 300,
-            "createdAt": "2021-02-14T00:00:00.000Z"
-        }
-    ]
+  "transactions": [
+    {
+      "description": "Salário",
+      "price": 5250,
+      "category": "Salário",
+      "type": "income",
+      "createdAt": "2024-02-21T22:00:43.518Z",
+      "id": 7
+    }
+  ]
 }

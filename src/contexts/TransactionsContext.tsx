@@ -9,9 +9,19 @@ export interface Transaction {
   category: string
   createdAt: string
 }
+
+interface CreateTransactionInput {
+  description: string
+  price: number
+  category: string
+  type: 'income' | 'outcome'
+}
+
 interface TransactionContextType {
   transactions: Transaction[]
   fetchTransactions: (query?: string) => Promise<void>
+  createTransaction: (data: CreateTransactionInput) => Promise<void>
+  deleteTransaction: (id: number) => void
 }
 
 interface TransactionProviderProps {
@@ -24,17 +34,46 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
   async function fetchTransactions(query?: string) {
     const response = await api.get('/transactions', {
       params: {
+        _sort: 'createdAt',
+        _order: 'desc',
         q: query,
       },
     })
     setTransactions(response.data)
   }
 
+  async function createTransaction(data: CreateTransactionInput) {
+    const response = await api.post('/transactions', {
+      ...data,
+      createdAt: new Date(),
+    })
+
+    setTransactions((state) => [response.data, ...state])
+  }
+
+  async function deleteTransaction(id: number) {
+    try {
+      await api.delete(`/transactions/${id}`)
+      setTransactions(
+        transactions.filter((transaction) => transaction.id !== id),
+      )
+    } catch (error) {
+      console.error('Erro ao excluir transação:', error)
+    }
+  }
+
   useEffect(() => {
     fetchTransactions()
   }, [])
   return (
-    <TransactionsContext.Provider value={{ transactions, fetchTransactions }}>
+    <TransactionsContext.Provider
+      value={{
+        transactions,
+        fetchTransactions,
+        createTransaction,
+        deleteTransaction,
+      }}
+    >
       {children}
     </TransactionsContext.Provider>
   )
