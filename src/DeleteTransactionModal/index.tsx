@@ -10,14 +10,27 @@ import {
 } from './styles'
 import { Warning, X } from 'phosphor-react'
 
-import { useContext } from 'react'
 import { TransactionsContext } from '../contexts/TransactionsContext'
+import { useContextSelector } from 'use-context-selector'
+type OnCloseFunction = () => void
 
-const DeleteTransactionModal = () => {
-  const { transactions, deleteTransaction } = useContext(TransactionsContext)
+interface DeleteTransactionModal {
+  onClose: OnCloseFunction
+}
+const DeleteTransactionModal = ({ onClose }: DeleteTransactionModal) => {
+  const { transactions, deleteTransaction } = useContextSelector(
+    TransactionsContext,
+    (context) => {
+      return {
+        transactions: context.transactions,
+        deleteTransaction: context.deleteTransaction,
+      }
+    },
+  )
 
   const handleDeleteTransaction = (id: number) => {
     deleteTransaction(id)
+    onClose()
   }
 
   return (

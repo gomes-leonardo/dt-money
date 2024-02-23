@@ -12,11 +12,20 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
-import { useContext } from 'react'
+import { useContextSelector } from 'use-context-selector'
 
-const NewTransactionModal = () => {
-  const { createTransaction } = useContext(TransactionsContext)
+type OnCloseFunction = () => void
 
+interface NewTransactionModalProps {
+  onClose: OnCloseFunction
+}
+const NewTransactionModal = ({ onClose }: NewTransactionModalProps) => {
+  const createTransaction = useContextSelector(
+    TransactionsContext,
+    (context) => {
+      return context.createTransaction
+    },
+  )
   const newTransactionFormSchema = z.object({
     description: z.string(),
     price: z.number(),
@@ -44,6 +53,7 @@ const NewTransactionModal = () => {
       ...data,
     })
     reset()
+    onClose()
   }
 
   return (

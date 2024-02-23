@@ -1,12 +1,20 @@
 {
   "transactions": [
     {
-      "description": "Salário",
-      "price": 5250,
-      "category": "Salário",
+      "description": "Matricula da faculdade ",
+      "price": 123,
+      "category": "Faculdade",
+      "type": "outcome",
+      "createdAt": "2024-02-22T17:43:56.697Z",
+      "id": 1
+    },
+    {
+      "description": "Freelance",
+      "price": 1200,
+      "category": "Landing Page",
       "type": "income",
-      "createdAt": "2024-02-21T22:00:43.518Z",
-      "id": 7
+      "createdAt": "2024-02-22T22:08:03.430Z",
+      "id": 2
     }
   ]
 }

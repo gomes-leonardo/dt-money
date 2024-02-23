@@ -6,15 +6,26 @@ import {
   TransactionsContainer,
   TransactionsTable,
 } from './styles'
-import { useContext } from 'react'
+import { useState } from 'react'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { TrashSimple } from 'phosphor-react'
 import * as Dialog from '@radix-ui/react-dialog'
-import NewTransactionModal from '../../components/NewTransactionModal'
 import DeleteTransactionModal from '../../DeleteTransactionModal'
+import { useContextSelector } from 'use-context-selector'
 const Transactions = () => {
-  const { transactions } = useContext(TransactionsContext)
+  const { transactions } = useContextSelector(
+    TransactionsContext,
+    (context) => {
+      return {
+        transactions: context.transactions,
+      }
+    },
+  )
+  const [open, setOpen] = useState(false)
 
+  const handleCloseModal = () => {
+    setOpen(false)
+  }
   const formatDate = (date: string) => {
     const newDate = new Date(date)
     return newDate.toLocaleDateString('pt-BR')
@@ -41,11 +52,11 @@ const Transactions = () => {
                 <td>{transaction.category}</td>
                 <td>{formatDate(transaction.createdAt)}</td>
                 <td>
-                  <Dialog.Root>
+                  <Dialog.Root open={open} onOpenChange={setOpen}>
                     <Dialog.Trigger asChild>
                       <TrashSimple style={{ cursor: 'pointer' }} size={22} />
                     </Dialog.Trigger>
-                    <DeleteTransactionModal />
+                    <DeleteTransactionModal onClose={handleCloseModal} />
                   </Dialog.Root>
                 </td>
               </tr>
